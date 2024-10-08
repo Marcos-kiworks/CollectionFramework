@@ -383,7 +383,8 @@ public class App {
         if (optionalDeSalario.isPresent())
                 salarioPromedio = optionalDeSalario.getAsDouble();
 
-
+        /* https://docs.oracle.com/javase/tutorial/java/javaOO/lambdaexpressions.html#syntax  */
+        
     }
 
 }
