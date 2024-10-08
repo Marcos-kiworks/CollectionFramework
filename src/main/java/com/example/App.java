@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.OptionalDouble;
 
 /**
  * Hello world!
@@ -204,6 +205,18 @@ public class App {
                 .departamento(Departamento.INFORMÁTICA)
                 .salario(3500.78)
                 .build());
+        elementosVarios.add(Empleado.builder()
+                .nombre("Elli")
+                .genero(Genero.MUJER)
+                .departamento(Departamento.RRHH)
+                .salario(2200.78)
+                .build());
+        elementosVarios.add(Empleado.builder()
+                .nombre("María")
+                .genero(Genero.HOMBRE)
+                .departamento(Departamento.FINANZAS)
+                .salario(3600.50)
+                .build());
 
         /* Agregar un estudiante */
         elementosVarios.add(
@@ -269,25 +282,53 @@ public class App {
            * Vamos a emplear Pattern matching, surgido a partir de Java 11
          */
 
-         /* se usa super y no extend xq extend genera una lista inmutable */
+ /* se usa super y no extend xq extend genera una lista inmutable */
         double sumatoriaBecas = 0;
         int studentCounter = 0;
         double promedioBecas = 0;
 
-        for ( Object obj : elementosVarios) {
-                //¿como saber el tipo del objeto extraido de la coleccion?
-                // Utilizando el operador instanceof y también Pattern Matching.
-                if (obj instanceof Estudiante estudiante) {
-                        sumatoriaBecas += estudiante.getBeca();
-                        studentCounter++;
-                } else if (obj instanceof Empleado empleado) {
-                        
-                } else {
-                        
-                }
+        for (Object obj : elementosVarios) {
+            //¿como saber el tipo del objeto extraido de la coleccion?
+            // Utilizando el operador instanceof y también Pattern Matching.
+            if (obj instanceof Estudiante estudiante) {
+                sumatoriaBecas += estudiante.getBeca();
+                studentCounter++;
+            } else if (obj instanceof Empleado empleado) {
+
+            } else {
+
+            }
         }
 
+        promedioBecas = sumatoriaBecas / studentCounter;
+        System.err.println("El promedio de dinero de las becas de los estudiantes es " + promedioBecas);
 
+        // Utilizando operaciones de agregado, que implica el uso de:
+        // 1. Métodos de la clase Stream: 
+        // 2. Concepto de Tubería: Secuencia de operacione de agregado que tiene fuente,operaciones intermedias y una sola operacion terminal
+        // 3. Interfaces funcionales
+        // 4. Clase anónima
+        // 5. Expresiones Lambda
+        // 6. Métodos por referencia
+
+        /* Recorrer la colección de elementosVarios para obtener el salario promedio
+         * de los empleados del género MUJER.
+         */
+        // Hay que crear o instanciar um objeto de la clase Filtro
+        Filtro filtro = new Filtro();
+        // elementosVarios.stream().filter(filtro)
+
+        /* El tipo Optional es una cajita donde puede venir el resultado o null,
+         * por tanto te protege del NullPointerException
+         */
+
+
+        OptionalDouble optionalDeSalario = elementosVarios.stream().filter(new Filtro()).mapToDouble(new Mapeador()).average();
+        double salarioPromedio;
+
+        if (optionalDeSalario.isPresent())
+                salarioPromedio = optionalDeSalario.getAsDouble();
+                System.out.println(salarioPromedio);
     }
 
 }
